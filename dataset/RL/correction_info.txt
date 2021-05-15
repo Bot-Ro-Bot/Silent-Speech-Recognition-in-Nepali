@@ -1,0 +1,6 @@
+{
+	correct : {
+		mode : mental,
+		file : OpenBCI-RAW-2021-05-13_13-44-12.txt
+		}
+}
