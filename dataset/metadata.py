@@ -12,9 +12,9 @@ metadata = {
 	"speaker2":{
 
 		"name" : 'Upendra Subedi',
-		"age" : ..,
-		"height" : .. ft,
-		"weight" : .. kg,
+		"age" : 23,
+		"height" : 5'10" ft,
+		"weight" : 65 kg,
 		"vocal_health" : 'good',
 		"health" : 'good'
 	}
