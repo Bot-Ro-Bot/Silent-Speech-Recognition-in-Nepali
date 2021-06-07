@@ -1,6 +1,6 @@
 all_modes_test.txt
 codes/.ipynb_checkpoints/*.ipynb
 codes/Analyze Samples_R[N|L].ipynb
-codes/Analyze Samples_RL_?ew.ipynb
-codes/Analyze Samples_RL_?ew.py
+codes/Analyze Samples_RL_?ew.*[b|y]
+#codes/Analyze Samples_RL_?ew.py
 pickles/*.pickle
