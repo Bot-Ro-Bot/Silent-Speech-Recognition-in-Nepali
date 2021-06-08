@@ -1,3 +1,4 @@
 all_modes_test.txt
-codes/Analyze Samples_RN.ipynb
+codes/.ipynb_checkpoints/*.ipynb
+codes/Analyze Samples_R[N|L]*.*[b|y]
 pickles/*.pickle
