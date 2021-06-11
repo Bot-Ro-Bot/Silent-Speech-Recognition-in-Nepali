@@ -120,7 +120,6 @@ class EMG(object):
         print(len(Y))
         print(temp_X.shape)
         return self.reduce_dimension(temp_X),self.encode_labels(Y)
-
-    
+#this is fit_transform    
     def fit_transform(self,X,Y):
         return self.fit(X,Y)
