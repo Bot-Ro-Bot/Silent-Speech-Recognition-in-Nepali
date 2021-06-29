@@ -1,7 +1,3 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
-
 from emg_lib.parser import parser, getAugmentedData
 from emg_lib.filter import signal_pipeline
 from emg_lib.features import *

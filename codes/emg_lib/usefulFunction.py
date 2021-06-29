@@ -1,10 +1,13 @@
-MAIN_DIR = "."
 import os 
+import numpy as np
+
+MAIN_DIR = "."
 while os.path.basename(os.getcwd())!="Silent-Interface-for-IOT-Devices":
     os.chdir("..")
 PICKLE_DIR = os.path.join(MAIN_DIR,"pickles")
 FONT_DIR = [os.path.join(MAIN_DIR,"fonts")]
 
+print("from font ", FONT_DIR)
 
 #TODO : rename this file later
 def reshapeChannelIndexToLast(data_feature):
@@ -17,13 +20,15 @@ def reshapeChannelIndexToLast(data_feature):
     return data_feature
 
 #confusion matrix
-import matplotlib.pyplot as plt
-from matplotlib import font_manager
-font_files = font_manager.findSystemFonts(fontpaths=FONT_DIR)
-for font_file in font_files:
-    font_manager.fontManager.addfont(font_file)
-# set font
-plt.rcParams['font.family'] = 'mangal'
+# TODO : remove the addfont method error
+# import matplotlib.pyplot as plt
+# from matplotlib import font_manager
+# font_files = font_manager.findSystemFonts(fontpaths=FONT_DIR)
+# for font_file in font_files:
+#     font_manager.fontManager.addfont(font_file)
+
+# # set font
+# plt.rcParams['font.family'] = 'mangal'
 
 from sklearn.metrics import confusion_matrix
 def confusion_matrix_plt(y_value , pred_value, labels, normalize = None):

@@ -1,66 +1,39 @@
-import serial
-import binascii
-from serial.tools import list_ports 
-portLists = list_ports.main()
-print(portLists)
+import time
+import tqdm
+import numpy as np
+import pandas as pd
 
-devicePortName = '/dev/ttyUSB0'
-baudRate = 115200
-parity = 8 
-timeout = 2 	#seconds
+import brainflow
+from brainflow.board_shim import BoardShim, BrainFlowInputParams, LogLevels, BoardIds
+from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
 
-samplesNumber = 100
+BoardShim.enable_dev_board_logger()
 
-with serial.Serial(devicePortName, baudRate, timeout=timeout) as ser:
-	receivedString = ''
-	initialMessageReceived = False
-	while not initialMessageReceived:
-		receivedByte = ser.read()
-		# print('time out triggered.')
-		receivedString += receivedByte.decode()
-		if '$$$' in receivedString:
-			initialMessageReceived = True
-	print(receivedString)
-	print("[+] Initial message received")
+boardParameters = BrainFlowInputParams()
+boardParameters.serial_port = '/dev/ttyUSB0'
 
-	readCommand = 'b'.encode()
-	ser.write(readCommand)
+cytonId = BoardIds.SYNTHETIC_BOARD.value #BoardIds.CYTON_BOARD.value
+board = BoardShim(cytonId, boardParameters)
+board.prepare_session()
 
-	while True:
-		receivedByte = ser.read(1)
-		# print(receivedBytes.decode(),end='')
-		print(binascii.hexlify(receivedByte))
+board.start_stream()
+BoardShim.log_message(LogLevels.LEVEL_INFO.value, 'start sleeping in the main thread')
+for i in zip(tqdm.tqdm(range(10),desc="PARSING DATA")):
+    time.sleep(1)
 
+data = board.get_board_data()
+# data = board.get_emg_channels(cytonId)
+board.stop_stream()
+board.release_session()
 
+# eeg_channels = BoardShim.get_eeg_channels(cytonId)
+df = pd.DataFrame(np.transpose(data))
+print('Data From the Board')
+print(df.head(10))
 
-'''
-Sample Index, 	EXG Channel 0, 	EXG Channel 1, 		EXG Channel 2, 		EXG Channel 3, 		EXG Channel 4, 		EXG Channel 5, 
-229.0, 			-33375.78125, 	10337.591796875, 	5964.29443359375, 	18111.841796875, 	7371.42626953125, 	14257.4619140625, 
-
-EXG Channel 6, 		EXG Channel 7, 		Accel Channel 0, 	Accel Channel 1, 	Accel Channel 2, 	Other, 	Other, 	Other, 	Other, 
-30150.244140625, 	12550.146484375, 	0.0, 				0.0, 				0.0, 				193.0, 	0.0, 	1.0, 	1.0, 
-
-Other, 	Other, 	Other, 	Analog Channel 0, 	Analog Channel 1, 	Analog Channel 2, 	Timestamp, 				Timestamp (Formatted)
-0.0, 	0.0, 	1.0, 	1.0, 				256.0, 				1.0, 				1.620898581782125E9, 	2021-05-13 15:21:21.782
-
-
-b'a0'
-b'91'
-b'92'
-b'10'
-b'46'
-b'ab'
-b'f3'
-b'7d'
-b'91'
-b'a9'
-b'a5'
-b'91'
-b'89'
-b'b0'
-b'ad'
-b'ba'
-b'92'
-b'a2'
-b'88'
-#'''
+# demo for data serialization using brainflow API, we recommend to use it instead pandas.to_csv()
+DataFilter.write_file(data, 'test.csv', 'w')  # use 'a' for append mode
+restored_data = DataFilter.read_file('test.csv')
+restored_df = pd.DataFrame(np.transpose(restored_data))
+print('Data From the File')
+print(restored_df.head(10))

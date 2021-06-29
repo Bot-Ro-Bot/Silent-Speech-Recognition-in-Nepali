@@ -1,3 +1,6 @@
+import numpy as np 
+import tqdm
+
 # hardware definitions
 """
 https://docs.openbci.com/docs/02Cyton/CytonDataFormat#:~:text=By%20default%2C%20our%20Arduino%20sketch,of%200.02235%20microVolts%20per%20count
@@ -76,8 +79,7 @@ def parser(files, NORMALIZE=True, DEPLOY=False, utteranceCountPerFile = 15):
                     a_frame = (frames[left_pad:right_pad,:-1])[:percentile_99]
                     signal.append(a_frame)
     
-        # convert to microVolts and return
-        return np.array(signal)*SCALE_FACTOR
+        return np.array(signal) # removed scale factor
         
     for file,i in zip(files,tqdm.tqdm(range(1,len(files)+1),desc="PARSING DATA")):
         get_data(file)
@@ -86,7 +88,7 @@ def parser(files, NORMALIZE=True, DEPLOY=False, utteranceCountPerFile = 15):
 
 def getAugmentedData(all_data, shift_length=100):
     DATA_LENGTH = len(all_data["labels"])
-    
+
     def time_shift(data,SHIFT_LEN = shift_length, SHIFT_DIR ="RIGHT", index=0):
         if SHIFT_DIR != "RIGHT":
             SHIFT_LEN = - SHIFT_LEN

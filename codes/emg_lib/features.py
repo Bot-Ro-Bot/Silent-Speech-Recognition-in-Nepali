@@ -1,4 +1,15 @@
+import tqdm
+import biosppy
+import numpy as np 
 import scipy.signal as sig
+import librosa
+import librosa.display
+from scipy.fft import fft,fftfreq
+from scipy.fftpack import fft
+
+
+SAMPLING_RATE = 250
+
 # spectorgram features...
 def getSpectrogram(sdata):
     M = 60
