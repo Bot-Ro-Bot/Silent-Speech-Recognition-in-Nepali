@@ -12,7 +12,7 @@
 			$('#process_input').bind('click', function(){
 				if ( start == 0) {
 					$.getJSON('/start_stream',{
-						record: "startstream"	//$('input[name="record"]').val(),
+						record: "startstream"
 					}, function(data){
 					$("#result").text(data.result);
 					});
@@ -28,6 +28,7 @@
 							clearInterval(counter);
 							$("#status").text("finished");
 							audio.play();
+
 						}
 					}, 1000);
 				}

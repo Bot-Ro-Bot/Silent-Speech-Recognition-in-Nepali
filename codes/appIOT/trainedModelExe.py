@@ -3,7 +3,7 @@ import glob
 import numpy as np
 from emg_lib import *
 MAIN_DIR = "."
-if os.path.basename(os.getcwd())!="Silent-Interface-for-IOT-Devices":
+while os.path.basename(os.getcwd())!="Silent-Interface-for-IOT-Devices":
     os.chdir("..")
 # print("from trainedModel file : ", os.getcwd())
 # print("test only : ", getDir())
