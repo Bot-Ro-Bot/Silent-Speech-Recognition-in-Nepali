@@ -45,8 +45,15 @@ def start_stream():
 			data = board.get_board_data()
 			board.stop_stream()
 			board.release_session()
-			DataFilter.write_file(data, 'test.csv', 'w')
+			DataFilter.write_file(data, 'recording/test.csv', 'w')
+			# TODO : 
+			# extract the channel data
+			# pass it to pipeline 
+			# pass to a trained model
+			# return the predicted result to the web interface. 
 			return jsonify(result='Stopped Recording')
+			# need to add iot devices
+			# routes for iot device to check the predicted word for action to be performed
 	except Exception as e :
 		return str(e)
 
