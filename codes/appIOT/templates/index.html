@@ -23,12 +23,16 @@
 					var counter = setInterval(function(){
 						var currentTime = new Date().getTime();
 						var timeDifference = parseInt((currentTime - startTime)/1000);
-						$("#status").text(timeDifference);
+						$("#status").text(6-timeDifference);
 						if(timeDifference > 6){
 							clearInterval(counter);
 							$("#status").text("finished");
 							audio.play();
-
+							$.getJSON('/start_stream',{
+								record: "stopstream"
+							},function(data){
+								$("#result").text(data.result);
+							});
 						}
 					}, 1000);
 				}
@@ -56,8 +60,10 @@
 			<!-- <input type="text" name="record"> -->
 			<a href="#" id="process_input"> <button class="r_btn">Record</button></a>
 		</form>	
-		<p id="result"></p>	
-		<p id="status"></p>
+		<p>Counter : </p>
+		<p id="status">6</p>
+		<p>From Board : </p>
+		<p id="result"></p>
 	</div>
 <!-- 
 	<p>

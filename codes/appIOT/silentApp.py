@@ -8,13 +8,13 @@ from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
 
 
 # initalizing the board
-# BoardShim.enable_dev_board_logger()
+BoardShim.enable_dev_board_logger()
 
-# boardParameters = BrainFlowInputParams()
-# boardParameters.serial_port = '/dev/ttyUSB0'
+boardParameters = BrainFlowInputParams()
+boardParameters.serial_port = '/dev/ttyUSB0'
 
-# board_id = BoardIds.SYNTHETIC_BOARD.value #BoardIds.CYTON_BOARD.value
-# board = BoardShim(board_id, boardParameters)
+board_id = BoardIds.SYNTHETIC_BOARD.value #BoardIds.CYTON_BOARD.value
+board = BoardShim(board_id, boardParameters)
 
 app = Flask(__name__)
 app.run(debug=True)
@@ -37,11 +37,15 @@ def start_stream():
 		receivedData = request.args.get('record', 0, type=str)
 		if receivedData.lower() == 'startstream':
 			# app.logging.info("inside hero")
-			# board.prepare_session()
-
-
-			return jsonify(result='Started the Recording')
+			board.prepare_session()
+			board.start_stream()
+			BoardShim.log_message(LogLevels.LEVEL_INFO.value, 'start sleeping in the main thread')
+			return jsonify(result='Started the Recordings')
 		elif receivedData.lower() == 'stopstream':
+			data = board.get_board_data()
+			board.stop_stream()
+			board.release_session()
+			DataFilter.write_file(data, 'test.csv', 'w')
 			return jsonify(result='Stopped Recording')
 	except Exception as e :
 		return str(e)
