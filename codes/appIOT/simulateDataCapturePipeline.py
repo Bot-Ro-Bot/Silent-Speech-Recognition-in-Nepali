@@ -36,6 +36,14 @@ print(data.shape)
 channel_data = data[:,channels[:8]]     #[:8] - for synthetic boards only remove this.
 rawdata = []
 rawdata.append(channel_data)
-data_filtered = signal_pipeline(channel_data)
-data_feature = feature_pipeline_melspectrogram(data_filtered)
-data_featured = reshapeChannelIndexToLast(data_feature)
+filteredData = signal_pipeline(rawdata)
+dataFeature = feature_pipeline_melspectrogram(filteredData)
+dataFeature = reshapeChannelIndexToLast(dataFeature)
+
+# # pass to the model to train.
+# import tensorflow as tf
+# from tensorflow import keras
+# model = tf.keras.models.load_model('./models/models_CNN2d_3_o.h5')
+# model.summary()
+
+# model.predict(data_featured)
