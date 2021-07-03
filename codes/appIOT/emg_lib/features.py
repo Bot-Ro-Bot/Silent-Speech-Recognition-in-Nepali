@@ -6,6 +6,7 @@ import librosa
 import librosa.display
 from scipy.fft import fft,fftfreq
 from scipy.fftpack import fft
+import matplotlib.pyplot as plt 
 
 
 SAMPLING_RATE = 250
@@ -72,6 +73,7 @@ def plotMelspectrogram(singleChannelData):
     plt.title('Mel power spectrogram ')
     plt.colorbar(format='%+02.0f dB')
     plt.tight_layout()
+    plt.show()
     return log_S
 
 # mfcc features

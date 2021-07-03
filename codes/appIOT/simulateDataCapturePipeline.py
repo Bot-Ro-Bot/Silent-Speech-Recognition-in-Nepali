@@ -2,6 +2,8 @@ import time
 import tqdm
 import numpy as np
 # import pandas as pd
+from emg_lib import *
+
 
 import brainflow
 from brainflow.board_shim import BoardShim, BrainFlowInputParams, LogLevels, BoardIds
@@ -31,20 +33,9 @@ board.release_session()
 
 data = np.transpose(data)
 print(data.shape)
-channel_data = data[:,channels]
-
-
-
-# print(type(channel_data))
-
-# eeg_channels = BoardShim.get_eeg_channels(cytonId)
-# df = pd.DataFrame(np.transpose(data))
-# print('Data From the Board')
-# print(df.head(10))
-
-# # demo for data serialization using brainflow API, we recommend to use it instead pandas.to_csv()
-# DataFilter.write_file(data, 'test.csv', 'w')  # use 'a' for append mode
-# restored_data = DataFilter.read_file('test.csv')
-# restored_df = pd.DataFrame(np.transpose(restored_data))
-# print('Data From the File')
-# print(restored_df.head(10))
+channel_data = data[:,channels[:8]]     #[:8] - for synthetic boards only remove this.
+rawdata = []
+rawdata.append(channel_data)
+data_filtered = signal_pipeline(channel_data)
+data_feature = feature_pipeline_melspectrogram(data_filtered)
+data_featured = reshapeChannelIndexToLast(data_feature)
