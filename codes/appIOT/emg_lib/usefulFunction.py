@@ -1,5 +1,6 @@
 import os 
 import numpy as np
+import pickle
 
 MAIN_DIR = "."
 while os.path.basename(os.getcwd())!="Silent-Interface-for-IOT-Devices":
@@ -11,7 +12,7 @@ print("from font ", FONT_DIR)
 
 #TODO : rename this file later
 def reshapeChannelIndexToLast(data_feature):
-    if type(data_feature) == type(dict):
+    if type(data_feature) == dict:
         reshape_feature = np.zeros((data_feature['data'].shape[0], data_feature['data'].shape[2],
                             data_feature['data'].shape[3], data_feature['data'].shape[1]))
         for i in range(data_feature['data'].shape[0]):

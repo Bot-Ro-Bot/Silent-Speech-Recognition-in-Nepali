@@ -48,7 +48,6 @@ def start_stream():
 			board.release_session()
 			DataFilter.write_file(data, 'recording/test.csv', 'w')
 
-
 			channel_data = data[:, channels]
 			rawdata = []
 			rawdata.append(channel_data)

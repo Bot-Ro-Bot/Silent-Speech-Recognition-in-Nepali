@@ -1,6 +1,7 @@
 import os
 import glob
 import numpy as np
+import matplotlib.pyplot as plt
 from emg_lib import *
 MAIN_DIR = "."
 while os.path.basename(os.getcwd())!="Silent-Interface-for-IOT-Devices":
@@ -31,6 +32,7 @@ SPEAKER = ["RL","RN","SR","US"]
 SESSION = ["session"+str(i) for i in range(1,9)]
 SENTENCES =["अबको समय सुनाउ","एउटा सङ्गित बजाउ","आजको मौसम बताउ","बत्तिको अवस्था बदल","पङ्खाको स्तिथी बदल"]
 LABELS = np.array(SENTENCES)[[3, 2, 1, 4, 0, 3, 2, 1, 4, 0, 3, 2, 1, 4, 0]]
+label_sets = list(set(SENTENCES))
 
 testfiles = glob.glob(TEST_DATA_DIR+"/[A|B].txt", recursive=True) 
 print("The files in the dataset: ",(testfiles))
@@ -49,8 +51,14 @@ print(all_data_featured['data'][0].shape)
 all_data_featured = reshapeChannelIndexToLast(all_data_featured)
 print(all_data_featured['data'][0].shape)
 
+import tensorflow as tf
+from tensorflow import keras
+model = tf.keras.models.load_model('./models/modelCNN.h5')
+model.summary()
+preds = model.predict_classes(all_data_featured['data'])
 
-# import tensorflow as tf
-# from tensorflow import keras
-# model = tf.keras.models.load_model('../models/model_CNN2d_3_o.h5')
-# model.summary()
+from sklearn.preprocessing import LabelEncoder
+labelencoder_y = LabelEncoder()
+Y_encode = labelencoder_y.fit_transform(SENTENCES)
+print(preds)
+print(list(labelencoder_y.inverse_transform(list(preds))))
