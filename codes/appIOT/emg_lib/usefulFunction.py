@@ -1,5 +1,6 @@
 import os 
 import numpy as np
+import pickle
 
 MAIN_DIR = "."
 while os.path.basename(os.getcwd())!="Silent-Interface-for-IOT-Devices":
@@ -11,12 +12,21 @@ print("from font ", FONT_DIR)
 
 #TODO : rename this file later
 def reshapeChannelIndexToLast(data_feature):
-    reshape_feature = np.zeros((data_feature['data'].shape[0], data_feature['data'].shape[2],
-                         data_feature['data'].shape[3], data_feature['data'].shape[1]))
-    for i in range(data_feature['data'].shape[0]):
-        for j in range(8):
-            reshape_feature[i,:,:,j] = data_feature['data'][i,j,:,:]
-    data_feature['data'] = reshape_feature
+    if type(data_feature) == dict:
+        reshape_feature = np.zeros((data_feature['data'].shape[0], data_feature['data'].shape[2],
+                            data_feature['data'].shape[3], data_feature['data'].shape[1]))
+        for i in range(data_feature['data'].shape[0]):
+            for j in range(8):
+                reshape_feature[i,:,:,j] = data_feature['data'][i,j,:,:]
+        data_feature['data'] = reshape_feature
+    else :
+        reshape_feature = np.zeros((data_feature.shape[0], data_feature.shape[2],
+                            data_feature.shape[3], data_feature.shape[1]))
+        for i in range(data_feature.shape[0]):
+            for j in range(8):
+                reshape_feature[i,:,:,j] = data_feature[i,j,:,:]
+        data_feature = reshape_feature
+
     return data_feature
 
 #confusion matrix
