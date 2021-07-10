@@ -1,3 +1,0 @@
-[filter "idfilter"]
-	clean = sed -r 's/const char \*ssid = "\S+";$/const char \*ssid = "<your ssid>";/'
-
