@@ -85,7 +85,7 @@ def start_stream():
 def esp():
 	if madePrediction : 
 		madePrediction = False
-		return stringPrediction
+		return prediction 		#send only number to the arduino relating...
 	else : 
 		return "hello arduino"
 
