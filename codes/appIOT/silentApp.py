@@ -15,7 +15,7 @@ BoardShim.enable_dev_board_logger()
 boardParameters = BrainFlowInputParams()
 boardParameters.serial_port = '/dev/ttyUSB0'
 
-board_id = BoardIds.CYTON_BOARD.value #BoardIds.SYNTHETIC_BOARD.value #
+board_id = BoardIds.SYNTHETIC_BOARD.value #BoardIds.CYTON_BOARD.value #
 board = BoardShim(board_id, boardParameters)
 channels = board.get_emg_channels(board_id)
 
@@ -63,6 +63,10 @@ def start_stream():
 			# routes for iot device to check the predicted word for action to be performed
 	except Exception as e :
 		return str(e)
+
+@app.route('/esp')
+def esp():
+	return "hello arduino"
 
 '''
 source :
