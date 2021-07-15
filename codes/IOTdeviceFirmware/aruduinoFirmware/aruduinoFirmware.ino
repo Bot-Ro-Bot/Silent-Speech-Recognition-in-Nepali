@@ -33,9 +33,9 @@ void setup() {
 // 3. test the program in real board...
 void loop() {
   // put your main code here, to run repeatedly:
-  while (Serial.available()) {
-    if (Serial.available() > 0) {
-      char c = Serial.read();
+  while (mySerial.available()) {
+    if (mySerial.available() > 0) {
+      char c = mySerial.read();
       if (isControl(c)) {
         break;
       }

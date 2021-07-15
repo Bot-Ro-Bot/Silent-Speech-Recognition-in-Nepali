@@ -3,9 +3,9 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 
-const char *ssid = "yourssid";
-const char *pass = "pass";
-const char *host = "192.168.254.13";
+const char *ssid = "<yourssid>";
+const char *pass = "<password>";
+const char *host = "<ServerIPAddress>";
 
 WiFiClient wificlient;
 
