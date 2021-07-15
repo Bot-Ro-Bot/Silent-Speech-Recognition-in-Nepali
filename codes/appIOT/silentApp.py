@@ -36,11 +36,6 @@ madePrediction = False
 def index():
 	return render_template("index.html")
 
-# @app.route('/start_stream', methods=["GET"])
-# def start_stream():
-# 	print("In start stream")
-# 	return 1
-
 @app.route('/start_stream')
 def start_stream():
 	try:
@@ -80,14 +75,18 @@ def start_stream():
 	except Exception as e :
 		return str(e)
 
+# SENTENCES =["अबको समय सुनाउ","एउटा सङ्गित बजाउ","आजको मौसम बताउ","बत्तिको अवस्था बदल","पङ्खाको स्तिथी बदल"]
 # route for ESP to fetch data from
 @app.route('/esp')
 def esp():
 	if madePrediction : 
 		madePrediction = False
-		return prediction 		#send only number to the arduino relating...
+		return "P" + prediction 		#send only number to the arduino relating...
+		# ruff plan : send command String as "P<predNumber>" 
+		# where P - prediction
+		#		<predNumber> - sentence index : 0, 1, 2, 3, 4 # TODO figure out indicies of sentences and update in arduino...
 	else : 
-		return "hello arduino"
+		return "NA"
 
 '''
 source :
