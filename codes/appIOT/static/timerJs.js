@@ -1,3 +1,4 @@
+// this is just a template and is not currently used in the app script... 
 function recordStart() {
 	var audio = new Audio("static/resource/beep.mp3");
 	audio.play();
