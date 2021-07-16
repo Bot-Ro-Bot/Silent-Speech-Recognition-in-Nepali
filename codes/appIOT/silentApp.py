@@ -43,7 +43,6 @@ def start_stream():
 	try:
 		receivedData = request.args.get('record', 0, type=str)
 		if receivedData.lower() == 'startstream':
-			lightState = True #test... on board  
 			# app.logging.info("inside hero")
 			board.prepare_session()
 			board.start_stream()
@@ -56,7 +55,7 @@ def start_stream():
 			DataFilter.write_file(data, 'recording/test.csv', 'w')
 			
 			#test..
-			lightState = False
+			lightState ^= True
 			madePrediction = True
 
 			modelTest = False 
@@ -90,7 +89,7 @@ def esp():
 	global madePrediction
 	global sendBeaconCount
 	global lightState
-	
+
 	if madePrediction and sendBeaconCount : 
 		sendBeaconCount -= 1
 		if sendBeaconCount == 1 :
