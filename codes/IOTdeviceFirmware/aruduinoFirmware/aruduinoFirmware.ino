@@ -49,10 +49,12 @@ void loop() {
     if(isCmdInString("0")) {
       //TODO when prediction is word in index 0.
       Serial.println("value zero!!!");
+      digitalWrite(lightPin, true);
     }
     else if(isCmdInString("1")) {
       //TODO when prediction is word in index 1.
       Serial.println("value one!!!");
+      digitalWrite(lightPin, false);
     }
     else if(isCmdInString("2")) {
       //TODO when prediction is word in index 2.
@@ -69,7 +71,7 @@ void loop() {
     else {
       Serial.println("No Command Received");
     }
-    delay(5000);
+    delay(1000);
   }
   else {
     Serial.println("No Command Received");

@@ -3,9 +3,10 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 
-const char *ssid = "<yourssid>";
-const char *pass = "<password>";
-const char *host = "<ServerIPAddress>";
+const char *ssid = "tejgold@ClassicTech";
+const char *pass = "ngnl@2021";
+const char *host = "192.168.254.3";
+const char *port = "5000";
 
 WiFiClient wificlient;
 
@@ -31,7 +32,9 @@ Serial.println(WiFi.localIP());
 
 void loop() {
   HTTPClient http;
-  http.begin(wificlient, "http://192.168.254.13:5000/esp");
+//  "http://192.168.254.13:5000/esp"
+  String getUrl = "http://" + String(host) + ":" + String(port) + "/esp";
+  http.begin(wificlient, getUrl);
   int httpCode = http.GET();
   if(httpCode > 0 ){
     if(httpCode == HTTP_CODE_OK){
@@ -43,7 +46,7 @@ void loop() {
     Serial.printf("[HTTP] GET... failed error: %s\n", http.errorToString(httpCode).c_str());
   }
   http.end();
-  delay(5000);
+  delay(1000);
 }
 /*
  * Source :

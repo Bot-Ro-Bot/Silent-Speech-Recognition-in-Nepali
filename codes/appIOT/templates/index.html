@@ -10,7 +10,7 @@
 		var start = 0;
 		$(function(){
 			$('#process_input').bind('click', function(){
-				if ( start == 0) {
+				if ( start === 0) {
 					$.getJSON('/start_stream',{
 						record: "startstream"
 					}, function(data){
@@ -36,7 +36,7 @@
 						}
 					}, 1000);
 				}
-				else if ( start == 1 ){
+				else if ( start === 1 ){
 					$.getJSON('/start_stream',{
 						record: "stopstream"	//$('input[name="record"]').val(),
 					}, function(data){
