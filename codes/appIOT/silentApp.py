@@ -30,19 +30,16 @@ app.debug = True
 
 stringPrediction = ""
 madePrediction = False 
-
+lightState = False 
 
 @app.route('/')
 def index():
 	return render_template("index.html")
 
-# @app.route('/start_stream', methods=["GET"])
-# def start_stream():
-# 	print("In start stream")
-# 	return 1
-
 @app.route('/start_stream')
 def start_stream():
+	global madePrediction
+	global lightState
 	try:
 		receivedData = request.args.get('record', 0, type=str)
 		if receivedData.lower() == 'startstream':
@@ -56,6 +53,10 @@ def start_stream():
 			board.stop_stream()
 			board.release_session()
 			DataFilter.write_file(data, 'recording/test.csv', 'w')
+			
+			#test..
+			lightState ^= True
+			madePrediction = True
 
 			modelTest = False 
 			if modelTest:
@@ -73,21 +74,38 @@ def start_stream():
 				# model.summary()
 				prediction = model.predict_classes(dataFeature)
 				print(prediction)
-			    stringPrediction = list(labelencoder_y.inverse_transform(list(prediction)))
-			    madePrediction = True 
-			# return the predicted result to the web interface. 
+				stringPrediction = list(labelencoder_y.inverse_transform(list(prediction)))
+				madePrediction = True
+			    # return the predicted result to the web interface. 
 			return jsonify(result='Stopped Recording. Prediction is ' + stringPrediction )
 	except Exception as e :
 		return str(e)
 
+# SENTENCES =["अबको समय सुनाउ","एउटा सङ्गित बजाउ","आजको मौसम बताउ","बत्तिको अवस्था बदल","पङ्खाको स्तिथी बदल"]
+sendBeaconCount = 5
 # route for ESP to fetch data from
 @app.route('/esp')
 def esp():
-	if madePrediction : 
-		madePrediction = False
-		return prediction 		#send only number to the arduino relating...
+	global madePrediction
+	global sendBeaconCount
+	global lightState
+
+	if madePrediction and sendBeaconCount : 
+		sendBeaconCount -= 1
+		if sendBeaconCount == 1 :
+			madePrediction = False
+		if(lightState):
+			prediction = "0"
+		else :
+			prediction = "1"
+		return "P" + prediction 		#send only number to the arduino relating...
+		# ruff plan : send command String as "P<predNumber>" 
+		# where P - prediction
+		#		<predNumber> - sentence index : 0, 1, 2, 3, 4 # TODO figure out indicies of sentences and update in arduino...
 	else : 
-		return "hello arduino"
+		if not madePrediction :
+			sendBeaconCount = 5
+		return "NA"
 
 '''
 source :

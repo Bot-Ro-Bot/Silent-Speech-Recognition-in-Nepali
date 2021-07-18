@@ -3,47 +3,39 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<!-- import the jquery library to use with the javascript in the web browser -->
 	<script type="text/javascript" src="{{ url_for('static', filename='jquery-3.6.0.js')}}"></script>
+	<!-- following js is not in use... -->
 	<script type="text/javascript" src="{{ url_for('static', filename='timerJs.js')}}"></script>
+	
 	<script type="text/javascript">
-		
 		var start = 0;
 		$(function(){
 			$('#process_input').bind('click', function(){
-				if ( start == 0) {
-					$.getJSON('/start_stream',{
-						record: "startstream"
-					}, function(data){
-					$("#result").text(data.result);
-					});
-					start = 1;
-					var audio = new Audio("static/resource/beep.mp3");
-					audio.play();
-					var startTime = new Date().getTime();
-					var counter = setInterval(function(){
-						var currentTime = new Date().getTime();
-						var timeDifference = parseInt((currentTime - startTime)/1000);
-						$("#status").text(6-timeDifference);
-						if(timeDifference > 6){
-							clearInterval(counter);
-							$("#status").text("finished");
-							audio.play();
-							$.getJSON('/start_stream',{
-								record: "stopstream"
-							},function(data){
-								$("#result").text(data.result);
-							});
-						}
-					}, 1000);
-				}
-				else if ( start == 1 ){
-					$.getJSON('/start_stream',{
-						record: "stopstream"	//$('input[name="record"]').val(),
-					}, function(data){
-					$("#result").text(data.result);
-					});
-					start = 0;
-				}
+				$.getJSON('/start_stream',{
+					record: "startstream"
+				}, function(data){
+				$("#result").text(data.result);
+				});
+				start = 1;
+				var audio = new Audio("static/resource/beep.mp3");
+				audio.play();
+				var startTime = new Date().getTime();
+				var counter = setInterval(function(){
+					var currentTime = new Date().getTime();
+					var timeDifference = parseInt((currentTime - startTime)/1000);
+					$("#status").text(6-timeDifference);
+					if(timeDifference > 6){
+						clearInterval(counter);
+						$("#status").text("finished");
+						audio.play();
+						$.getJSON('/start_stream',{
+							record: "stopstream"
+						},function(data){
+							$("#result").text(data.result);
+						});
+					}
+				}, 1000);
 				return false;
 			});
 		});
