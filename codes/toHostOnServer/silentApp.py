@@ -28,11 +28,10 @@ def index():
 def prediction():
 	global predictionCount
 	# TODO:replace putsomeWords with predicted words from the model 
-	return jsonify(result= str(predictionCount) +
-	  				stringPrediction if stringPrediction == 'Xaina' else "<putsomeWords...>")
+	return jsonify(result= str(predictionCount) + stringPrediction)
 
 @app.route('/takeEmg', methods=['POST'])
-def takeEmg():
+def takeEmg():	# takes emg and predict words
 	global predictionCount
 	global stringPrediction
 	emgData = request.json
@@ -64,6 +63,7 @@ sendBeaconCount = 5
 # route for ESP to fetch data from
 @app.route('/esp')
 def esp():
+	# Todo : need make implementation as per predicted word
 	global madePrediction
 	global sendBeaconCount
 	global lightState
