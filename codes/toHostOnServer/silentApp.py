@@ -3,6 +3,9 @@ import logging
 
 import tensorflow as tf
 from tensorflow import keras
+import numpy as np
+
+from emg_lib import *
 
 SENTENCES =["अबको समय सुनाउ","एउटा सङ्गित बजाउ","आजको मौसम बताउ","बत्तिको अवस्था बदल","पङ्खाको स्तिथी बदल"]
 
@@ -37,25 +40,34 @@ def takeEmg():	# takes emg and predict words
 	emgData = request.json
 	if 'resetCount' in  emgData :
 		predictionCount = 0
+
+	implementModel = False
 	if 'emg' in emgData:
 		predictionCount += 1
 		print(type(emgData))
 		print(type(emgData['emg']))
+		print(len(emgData['emg']))
 		
-		rawdata = emgData['emg']	#send channel data 
+		channel_data = np.array(emgData['emg'])	#send channel data 
+		rawdata = []
+		rawdata.append(channel_data)
 		filteredData = signal_pipeline(rawdata)
 		dataFeature = feature_pipeline(filteredData)
 		dataFeature = reshapeChannelIndexToLast(dataFeature)
 
-		# TODO : need to test with a trained model and real data ... 
-		# pass to a trained model
-		model = tf.keras.models.load_model("<modelname>.h5")
-		# model.summary()
-		prediction = model.predict_classes(dataFeature)
-		print(prediction)
-		stringPrediction = list(labelencoder_y.inverse_transform(list(prediction)))
-		madePrediction = True
-	    # return the predicted result to the web interface. 
+		print(dataFeature.shape)
+		print("EXTRACTING Success")
+
+		if implementModel:
+			# TODO : need to test with a trained model and real data ... 
+			# pass to a trained model
+			model = tf.keras.models.load_model("<modelname>.h5")
+			# model.summary()
+			prediction = model.predict_classes(dataFeature)
+			print(prediction)
+			stringPrediction = list(labelencoder_y.inverse_transform(list(prediction)))
+			madePrediction = True
+		    # return the predicted result to the web interface. 
 	return "Success"
 
 # SENTENCES =["अबको समय सुनाउ","एउटा सङ्गित बजाउ","आजको मौसम बताउ","बत्तिको अवस्था बदल","पङ्खाको स्तिथी बदल"]

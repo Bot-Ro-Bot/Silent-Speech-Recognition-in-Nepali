@@ -25,7 +25,7 @@ def feature_pipeline(data):
             f_data.append(c_data)
         return np.array((f_data-np.mean(f_data))/np.std(f_data))
     
-    for d,i in zip(data,tqdm(range(1,len(data)+1),desc="EXTRACTING DATA: ")):
+    for d,i in zip(data,tqdm.tqdm(range(1,len(data)+1),desc="EXTRACTING DATA: ")):
         temp_data = process_signal(d)
         feature_data.extend([temp_data])
     return np.array(feature_data)
