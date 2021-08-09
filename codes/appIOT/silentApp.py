@@ -107,6 +107,13 @@ def esp():
 			sendBeaconCount = 5
 		return "NA"
 
+@app.route('/takeEmg', methods=['POST'])
+def takeEmg():
+	emgData = request.json  
+	print(type(emgData))
+	print(type(emgData['emg']))
+	print(emgData['emg'])
+	return "Success"
 '''
 source :
 https://pythonprogramming.net/jquery-flask-tutorial/

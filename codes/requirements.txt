@@ -6,4 +6,5 @@ librosa==0.7.2
 matplotlib==2.1.1
 numpy==1.13.3
 Flask==2.0.1
+tensorflow==2.4.1
 brainflow==3.0.1

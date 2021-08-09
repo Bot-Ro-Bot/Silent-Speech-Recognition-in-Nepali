@@ -50,13 +50,11 @@ void loop() {
     if (isCmdInString("P")) {
       if (isCmdInString("0")) {
         digitalWrite(lightPin, false);
-        delay(1000);
         //TODO when prediction is word in index 0.
         Serial.println("value zero!!!");
       }
       else if (isCmdInString("1")) {
         digitalWrite(lightPin, true);
-        delay(1000);
         //TODO when prediction is word in index 1.
         Serial.println("value one!!!");
       }
