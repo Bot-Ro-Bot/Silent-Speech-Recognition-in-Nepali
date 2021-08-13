@@ -20,10 +20,12 @@ app.debug = True
 # app.run(host="0.0.0.0")
 
 stringPrediction = "Xaina"
-madePrediction = False
+makePrediction = False
 lightState = False
 
 predictionCount = 0
+
+emgDataToKaggle = None
 
 @app.route('/')
 def index():
@@ -35,10 +37,27 @@ def prediction():
 	# TODO:replace putsomeWords with predicted words from the model 
 	return jsonify(result= str(predictionCount) + stringPrediction)
 
+@app.route('/getEmg', methods=['POST', 'GET'])
+def getEmg():	#gets emg data from the local host
+	global stringPrediction
+	global emgDataToKaggle
+	if request.method == 'POST':
+		prediction = request.json
+		if 'sentence' in prediction:
+			stringPrediction = prediction['sentence']
+			return None
+
+	elif request.method == 'GET':
+		if makePrediction:
+			return jsonify(result = emgDataToKaggle.tolist())
+		else:
+			return jsonify(result = "None")
+
+
 @app.route('/takeEmg', methods=['POST'])
 def takeEmg():	# takes emg and predict words
 	global predictionCount
-	global stringPrediction
+	global emgDataToKaggle
 	emgData = request.json
 	if 'resetCount' in  emgData :
 		predictionCount = 0
@@ -54,22 +73,24 @@ def takeEmg():	# takes emg and predict words
 		rawdata = []
 		rawdata.append(channel_data)
 		filteredData = signal_pipeline(rawdata)
-		
-		dataFeature = feature_pipeline(filteredData)
-		dataFeature = reshapeChannelIndexToLast(dataFeature)
+		emgDataToKaggle = filteredData.copy()
+
+		# dataFeature = feature_pipeline(filteredData)
+		# dataFeature = reshapeChannelIndexToLast(dataFeature)
+		makePrediction = True
 
 		print(dataFeature.shape)
 		print("EXTRACTING Success")
 
-		if implementModel:
-			# TODO : need to test with a trained model and real data ... 
-			# pass to a trained model
-			model = tf.keras.models.load_model("<modelname>.h5")
-			# model.summary()
-			prediction = model.predict_classes(dataFeature)
-			print(prediction)
-			stringPrediction = list(labelencoder_y.inverse_transform(list(prediction)))
-			madePrediction = True
+		# if implementModel:
+		# 	# TODO : need to test with a trained model and real data ... 
+		# 	# pass to a trained model
+		# 	model = tf.keras.models.load_model("<modelname>.h5")
+		# 	# model.summary()
+		# 	prediction = model.predict_classes(dataFeature)
+		# 	print(prediction)
+		# 	stringPrediction = list(labelencoder_y.inverse_transform(list(prediction)))
+		# 	makePrediction = True
 		    # return the predicted result to the web interface. 
 	return "Success"
 
@@ -79,14 +100,14 @@ sendBeaconCount = 5
 @app.route('/esp')
 def esp():
 	# Todo : need make implementation as per predicted word
-	global madePrediction
+	global makePrediction
 	global sendBeaconCount
 	global lightState
 
-	if madePrediction and sendBeaconCount :
+	if makePrediction and sendBeaconCount :
 		sendBeaconCount -= 1
 		if sendBeaconCount == 1 :
-			madePrediction = False
+			makePrediction = False
 		if(lightState):
 			prediction = "0"
 		else :
@@ -97,7 +118,7 @@ def esp():
 		#		<predNumber> - sentence index : 0, 1, 2, 3, 4
 		# TODO figure out indicies of sentences and update in arduino...
 	else :
-		if not madePrediction :
+		if not makePrediction :
 			sendBeaconCount = 5
 		return "NA"
 
