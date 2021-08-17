@@ -3,8 +3,8 @@ import logging
 
 import requests
 
-import tensorflow as tf
-from tensorflow import keras
+# import tensorflow as tf
+# from tensorflow import keras
 import numpy as np
 
 from emg_lib import *
@@ -41,23 +41,25 @@ def prediction():
 def getEmg():	#gets emg data from the local host
 	global stringPrediction
 	global emgDataToKaggle
+	global makePrediction
 	if request.method == 'POST':
 		prediction = request.json
 		if 'sentence' in prediction:
 			stringPrediction = prediction['sentence']
-			return None
+
 
 	elif request.method == 'GET':
 		if makePrediction:
-			return jsonify(result = emgDataToKaggle.tolist())
+			return jsonify(result = "test")#emgDataToKaggle.tolist())
 		else:
 			return jsonify(result = "None")
-
+	return "msgFromget"
 
 @app.route('/takeEmg', methods=['POST'])
 def takeEmg():	# takes emg and predict words
 	global predictionCount
 	global emgDataToKaggle
+	global makePrediction
 	emgData = request.json
 	if 'resetCount' in  emgData :
 		predictionCount = 0
@@ -79,7 +81,7 @@ def takeEmg():	# takes emg and predict words
 		# dataFeature = reshapeChannelIndexToLast(dataFeature)
 		makePrediction = True
 
-		print(dataFeature.shape)
+		print(filteredData.shape)
 		print("EXTRACTING Success")
 
 		# if implementModel:
