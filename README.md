@@ -12,6 +12,6 @@ The extracted analog EMG signal from the electrodes of all 8 channels is fed int
 50 Hz 1st order Butterworth filter and  1st order notch filter at 50 Hz), signal smoothing, and feature extraction (temporal and spectral) before it feeding to the neural network. This pipeline outputs the features which are further passed to a pre-trained model. The model then predicts the
 utterance on the basis of the features and the predicted utterance is finally displayed on the display unit of a remote computer.
 
-![muscle-seclection](figures/Screenshot from 2022-08-14 13-57-35.png)
+![methodology](figures/methodology.png)
 
 
