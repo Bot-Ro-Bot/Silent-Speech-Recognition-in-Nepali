@@ -14,4 +14,17 @@ utterance on the basis of the features and the predicted utterance is finally di
 
 ![methodology](figures/methodology.png)
 
+## Citation 
+```
+@InProceedings{IOEGC-12-082-12118,
+    author       = {Rhimesh Lwagun and  Sanjay Rijal and  Rabin Nepal and  Upendra Subedi and  Dinesh Baniya Kshatri},
+    title        = {{Silent Speech Recognition in Nepali}},
+    pages        = {628 -- 635},
+    booktitle    = {Proceedings of 12th IOE Graduate Conference},
+    year         = {2022},
+    volume       = {12},
+    month        = {October},
+    organization = {Institute of Engineering, Tribhuvan University, Nepal}
+}
+```
 
