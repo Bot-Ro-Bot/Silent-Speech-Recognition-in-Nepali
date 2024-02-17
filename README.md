@@ -1,4 +1,4 @@
-# [Silent-Interface-for-IOT-Devices](http://conference.ioe.edu.np/publications/ioegc12/IOEGC-12-082-12118.pdf)
+# [Silent Speech Recognition in Nepali](http://conference.ioe.edu.np/publications/ioegc12/IOEGC-12-082-12118.pdf)
 
 Since the development of the very first computer, human-computer interaction has always required to have some form of physical activity as an input to the computer. Although these methods are accurate and hassle-free, they fail to be intelligible to the differently-abled. Speech interaction tackles this issue to some extent but it is still subjected to privacy issues. The proposed system in this research project confronts these problems and provides a secure and seamless interaction between a human and a computer using silent speech recognition. The surface electromyography (sEMG) signals, during the silent speech, are recorded from the facial muscles of a speaker using 8-channel gold cup electrodes and filtered to remove noise and other unwanted signals. The spectrogram of the processed signal is then extracted to train a Convolution Neural Network (CNN). The trained model is finally deployed to predict the utterances.
 
